@@ -1,0 +1,158 @@
+[tool.poetry]
+name = "docling"
+version = "2.3.1"  # DO NOT EDIT, updated automatically
+description = "Docling PDF conversion package"
+authors = ["Christoph Auer <cau@zurich.ibm.com>", "Michele Dolfi <dol@zurich.ibm.com>", "Maxim Lysak <mly@zurich.ibm.com>", "Nikos Livathinos <nli@zurich.ibm.com>", "Ahmed Nassar <ahn@zurich.ibm.com>", "Peter Staar <taa@zurich.ibm.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/DS4SD/docling"
+homepage = "https://github.com/DS4SD/docling"
+keywords= ["docling", "convert", "document", "pdf", "layout model", "segmentation", "table structure", "table former"]
+ classifiers = [
+     "License :: OSI Approved :: MIT License",
+     "Operating System :: MacOS :: MacOS X",
+     "Operating System :: POSIX :: Linux",
+     "Development Status :: 5 - Production/Stable",
+     "Intended Audience :: Developers",
+     "Intended Audience :: Science/Research",
+     "Topic :: Scientific/Engineering :: Artificial Intelligence",
+     "Programming Language :: Python :: 3"
+ ]
+packages = [{include = "docling"}]
+
+[tool.poetry.dependencies]
+######################
+# actual dependencies:
+######################
+python = "^3.10"
+pydantic = "^2.0.0"
+docling-core = "^2.3.0"
+docling-ibm-models = "^2.0.3"
+deepsearch-glm = "^0.26.1"
+filetype = "^1.2.0"
+pypdfium2 = "^4.30.0"
+pydantic-settings = "^2.3.0"
+huggingface_hub = ">=0.23,<1"
+requests = "^2.32.3"
+easyocr = "^1.7"
+tesserocr = { version = "^2.7.1", optional = true }
+docling-parse = "^2.0.2"
+certifi = ">=2024.7.4"
+rtree = "^1.3.0"
+scipy = "^1.14.1"
+pyarrow = "^16.1.0"
+typer = "^0.12.5"
+python-docx = "^1.1.2"
+python-pptx = "^1.0.2"
+beautifulsoup4 = "^4.12.3"
+pandas = "^2.1.4"
+marko = "^2.1.2"
+
+[tool.poetry.group.dev.dependencies]
+black = {extras = ["jupyter"], version = "^24.4.2"}
+pytest = "^7.2.2"
+pre-commit = "^3.7.1"
+mypy = "^1.10.1"
+isort = "^5.10.1"
+python-semantic-release = "^7.32.2"
+flake8 = "^6.0.0"
+pyproject-flake8 = "^6.0.0"
+pytest-xdist = "^3.3.1"
+types-requests = "^2.31.0.2"
+flake8-pyproject = "^1.2.3"
+pylint = "^2.17.5"
+pandas-stubs = "^2.1.4.231227"
+ipykernel = "^6.29.5"
+ipywidgets = "^8.1.5"
+nbqa = "^1.9.0"
+
+[tool.poetry.group.docs.dependencies]
+mkdocs-material = "^9.5.40"
+mkdocs-jupyter = "^0.25.0"
+
+[tool.poetry.group.examples.dependencies]
+datasets = "^2.21.0"
+python-dotenv = "^1.0.1"
+# llama-index-readers-docling = { version = "^0.1.0", markers = 'python_version < "3.13"' }
+# llama-index-node-parser-docling = { version = "^0.1.0", markers = 'python_version < "3.13"' }
+# llama-index-readers-file = { version = "^0.2.2", markers = 'python_version < "3.13"' }
+# llama-index-embeddings-huggingface = { version = "^0.3.1", markers = 'python_version < "3.13"' }
+# llama-index-llms-huggingface-api = { version = "^0.2.0", markers = 'python_version < "3.13"' }
+# llama-index-vector-stores-milvus ={ version =  "^0.2.1", markers = 'python_version < "3.13"' }
+langchain-huggingface = "^0.0.3"
+langchain-milvus = "^0.1.4"
+langchain-text-splitters = "^0.2.4"
+
+[tool.poetry.group.mac_intel]
+optional = true
+
+[tool.poetry.group.mac_intel.dependencies]
+torch = [
+  {markers = "sys_platform != 'darwin' or platform_machine != 'x86_64'", version = "^2.2.2"},
+  {markers = "sys_platform == 'darwin' and platform_machine == 'x86_64'", version = "~2.2.2"}
+]
+torchvision = [
+  {markers = "sys_platform != 'darwin' or platform_machine != 'x86_64'", version = "^0"},
+  {markers = "sys_platform == 'darwin' and platform_machine == 'x86_64'", version = "~0.17.2"}
+]
+
+[tool.poetry.extras]
+tesserocr = ["tesserocr"]
+
+[tool.poetry.scripts]
+docling = "docling.cli.main:app"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 88
+py_version=311
+
+[tool.mypy]
+pretty = true
+# strict = true
+no_implicit_optional = true
+plugins = "pydantic.mypy"
+python_version = "3.10"
+
+[[tool.mypy.overrides]]
+module = [
+    "docling_parse.*",
+    "pypdfium2.*",
+    "networkx.*",
+    "scipy.*",
+    "filetype.*",
+    "tesserocr.*",
+    "docling_ibm_models.*",
+    "easyocr.*",
+    "deepsearch_glm.*",
+    "lxml.*",
+    "bs4.*",
+    "huggingface_hub.*"
+]
+ignore_missing_imports = true
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "E501"]
+
+[tool.semantic_release]
+# for default values check:
+# https://github.com/python-semantic-release/python-semantic-release/blob/v7.32.2/semantic_release/defaults.cfg
+
+version_source = "tag_only"
+branch = "main"
+
+# configure types which should trigger minor and patch version bumps respectively
+# (note that they must be a subset of the configured allowed types):
+parser_angular_allowed_types = "build,chore,ci,docs,feat,fix,perf,style,refactor,test"
+parser_angular_minor_types = "feat"
+parser_angular_patch_types = "fix,perf"
